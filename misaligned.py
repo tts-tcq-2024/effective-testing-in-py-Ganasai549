@@ -1,42 +1,30 @@
-import unittest
-from unittest.mock import patch
+def create_color_map():
+    primary_colors = ["White", "Red", "Black", "Yellow", "Violet"]
+    secondary_colors = ["Blue", "Orange", "Green", "Brown", "Slate"]
+    
+    color_map = [
+        (index, primary, secondary)
+        for index, primary in enumerate(primary_colors, start=1)
+        for secondary in secondary_colors
+    ]
+    
+    return color_map
 
-alert_failure_count = 0
+def display_color_map(color_map):
+    for index, primary_color, secondary_color in color_map:
+        print(f'{index} | {primary_color} | {secondary_color}')
 
+# Generate and verify the color map
+color_map = create_color_map()
+expected_color_map = [
+    (1, 'White', 'Blue'), (2, 'White', 'Orange'), (3, 'White', 'Green'), (4, 'White', 'Brown'), (5, 'White', 'Slate'),
+    (6, 'Red', 'Blue'), (7, 'Red', 'Orange'), (8, 'Red', 'Green'), (9, 'Red', 'Brown'), (10, 'Red', 'Slate'),
+    (11, 'Black', 'Blue'), (12, 'Black', 'Orange'), (13, 'Black', 'Green'), (14, 'Black', 'Brown'), (15, 'Black', 'Slate'),
+    (16, 'Yellow', 'Blue'), (17, 'Yellow', 'Orange'), (18, 'Yellow', 'Green'), (19, 'Yellow', 'Brown'), (20, 'Yellow', 'Slate'),
+    (21, 'Violet', 'Blue'), (22, 'Violet', 'Orange'), (23, 'Violet', 'Green'), (24, 'Violet', 'Brown'), (25, 'Violet', 'Slate')
+]
 
-def simulate_network_alert(celsius):
-    print(f'WARNING: Temperature is {celsius} Celsius')
-    # Return 200 for success
-    # Return 500 for failure
-    # This stub always returns 200 (success)
-    if celsius > 200:
-        return 500
-    return 200
-
-
-def temperature_alert_in_celsius(fahrenheit):
-    celsius = (fahrenheit - 32) * 5 / 9
-    response_code = simulate_network_alert(celsius)
-    if response_code != 200:
-        # Count failures, but currently it's not working correctly
-        global alert_failure_count
-        alert_failure_count += 0
-
-
-# Run some sample alerts
-temperature_alert_in_celsius(400.5)
-temperature_alert_in_celsius(303.6)
-assert(simulate_network_alert(204.2) == 500)
-print('System status check complete.')
-print(f'Number of failed alerts: {alert_failure_count}')
-
-@patch('simulate_network_alert')
-def test_failure_count_increment(mock_alert):
-    mock_alert.return_value = 500
-    temperature_alert_in_celsius(100)
-    assert(alert_failure_count == 1)
-
-
-# Run the unit test
-if __name__ == '__main__':
-    unittest.main()
+assert color_map == expected_color_map, "Color map does not match expected values"
+display_color_map(color_map)
+assert len(color_map) == 25, "Color map length is incorrect"
+print("All checks passed successfully!\n")
